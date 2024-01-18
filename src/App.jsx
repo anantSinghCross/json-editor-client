@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Display from './components/Display';
 
 // Till Now: We have maintained the state in the same form as it was received from the server.
@@ -7,9 +7,10 @@ import Display from './components/Display';
 
 function App() {
   const [data, setData] = useState(null);
+  const submitButton = useRef(null);
   console.log(data);
   useEffect(() => {
-    fetch('/api/')
+    fetch('api/')
     .then((res) => res.json())
     .then((data) => setData(data));
   }, []);
@@ -39,6 +40,21 @@ function App() {
       return batter;
     })
     setData(prevData => ({ ...prevData, batters: { batter: newBatters}}));
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    submitButton.current.textContent = 'Save 🔃';
+    const res = await fetch('/api/',{
+      method: 'POST',
+      headers:{
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    const resData = await res.json();
+    submitButton.current.textContent = 'Save ✅';
+    console.log(submitButton);
   }
   
   // Toppings
@@ -80,7 +96,7 @@ function App() {
           {batters}
         </ul>
       </div>
-      <button>Save</button>
+      <button onClick={handleSubmit} ref={submitButton}>Save</button>
     </form>
   )
 }
