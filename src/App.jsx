@@ -1,10 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Display from './components/Display';
 
-// Till Now: We have maintained the state in the same form as it was received from the server.
-// Even while making changes we maintain the format of the state.
-// TODO: Send this state as it is to the server in the form of JSON.
-
 function App() {
   const [data, setData] = useState(null);
   const submitButton = useRef(null);
