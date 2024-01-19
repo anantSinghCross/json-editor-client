@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
-import Display from './components/Display';
+import { useState, useEffect, useRef, Fragment } from 'react'
 
 function App() {
   const [data, setData] = useState(null);
+  const [infoMsg, setInfoMsg] = useState('');
   const submitButton = useRef(null);
-  console.log(data);
+
   useEffect(() => {
     fetch('api/')
     .then((res) => res.json())
@@ -40,7 +40,7 @@ function App() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    submitButton.current.textContent = 'Save 🔃';
+    submitButton.current.textContent = 'Saving 🔄️';
     const res = await fetch('/api/',{
       method: 'POST',
       headers:{
@@ -49,8 +49,16 @@ function App() {
       body: JSON.stringify(data)
     });
     const resData = await res.json();
-    submitButton.current.textContent = 'Save ✅';
-    console.log(submitButton);
+    setInfoMsg(resData.msg);
+    if(resData.success){
+      submitButton.current.textContent = 'Saved ✅';
+    } else {
+      submitButton.current.textContent = 'Please Retry ❌';
+    }
+    setTimeout(() => {
+      submitButton.current.textContent = 'Save';
+      setInfoMsg('');
+    }, 2500);
   }
   
   // Toppings
@@ -93,6 +101,7 @@ function App() {
         </ul>
       </div>
       <button onClick={handleSubmit} ref={submitButton}>Save</button>
+      <h4>{infoMsg}</h4>
     </form>
   )
 }
