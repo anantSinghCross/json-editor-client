@@ -53,7 +53,7 @@ function App() {
     if(resData.success){
       submitButton.current.textContent = 'Saved ✅';
     } else {
-      submitButton.current.textContent = 'Please Retry ❌';
+      submitButton.current.textContent = 'Please Retry Saving ❌';
     }
     setTimeout(() => {
       submitButton.current.textContent = 'Save';
@@ -82,7 +82,7 @@ function App() {
   return (
     <form>
       <div>
-        <h3>{data.name} <sup>id:{data.id}</sup> </h3>
+        <h3>{data.name}</h3>
         
         <label htmlFor="ppu">PPU</label>
         <input onChange={handleRecipeChange} type="text" id="ppu" name='ppu' value={data.ppu}/><br />
@@ -100,8 +100,8 @@ function App() {
           {batters}
         </ul>
       </div>
-      <button onClick={handleSubmit} ref={submitButton}>Save</button>
-      <h4>{infoMsg}</h4>
+      <button onClick={handleSubmit} ref={submitButton}>Save</button><br />
+      <i>{infoMsg}</i>
     </form>
   )
 }
